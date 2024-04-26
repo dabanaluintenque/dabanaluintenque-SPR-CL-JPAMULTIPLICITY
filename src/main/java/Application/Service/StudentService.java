@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 /**
  * In this class, you will complete the code necessary to retrieve and manipulate entities related to the Student
  * entity. You can check out the ClassroomService to see how this is done for another entity. You should also review
@@ -59,6 +60,17 @@ public class StudentService {
      */
     public void assignClassroomToStudent(long studentId, Classroom classroom){
 
+        Optional<Student> assignStudent = studentRepository.findById(studentId);
+
+        if(assignStudent.isPresent()) {
+
+            Student student = assignStudent.get();
+
+            student.setClassroom(classroom);
+
+            studentRepository.save(student);
+        }
+
     }
 
     /**
@@ -69,6 +81,15 @@ public class StudentService {
      * @return the Classroom of the student
      */
     public Classroom getClassroomOfStudent(long studentId){
+
+        Optional<Student> studentClass = studentRepository.findById(studentId);
+
+        if( studentClass.isPresent()) {
+
+            Student student = studentClass.get();
+
+            return student.getClassroom();
+        }
         return null;
     }
 
@@ -80,5 +101,14 @@ public class StudentService {
      */
     public void unassignClassroomOfStudent(long studentId){
 
+
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if(studentOptional.isPresent()){
+            Student student = studentOptional.get();
+
+            student.setClassroom(null);
+            
+            studentRepository.save(student);
+        }
     }
 }
